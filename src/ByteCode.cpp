@@ -33,6 +33,11 @@ void ByteCode::AddU16(uint16_t value) {
   bit_converter::u16_to_bytes(value, true, bytes.end() - sizeof(uint16_t));
 }
 
+void ByteCode::AddI16(int16_t value) {
+  Extend(sizeof(int16_t));
+  bit_converter::i16_to_bytes(value, true, bytes.end() - sizeof(int16_t));
+}
+
 void ByteCode::AddString(const std::string &str) {
   if (str.size() < std::numeric_limits<uint16_t>::max()) {
     AddU16(static_cast<uint16_t>(str.size()));
@@ -50,6 +55,15 @@ void ByteCode::Extend(size_t size) {
   for (size_t i = 0; i < size; i++) {
     bytes.push_back(0);
   }
+}
+
+const Label &ByteCode::CreateLabel(size_t location) {
+  labels.push_back(Label(labels.size(), location));
+  return labels.back();
+}
+
+void ByteCode::Rewrite(const Label &label, int16_t value) {
+  bit_converter::i16_to_bytes(value, true, bytes.begin() + label.Location());
 }
 
 bool ByteCode::OutputToFile(const std::string &fileName) {
