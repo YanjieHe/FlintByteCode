@@ -145,7 +145,7 @@ void NativeLibrary::Compile(ByteCode &byteCode) {
 
 void NativeFunction::Compile(ByteCode &byteCode) {
   byteCode.AddString(this->functionName);
-  byteCode.AddI32(this->argsSize);
+  byteCode.AddU16(this->argsSize);
   byteCode.AddI32(this->nativeLibraryOffset);
 }
 

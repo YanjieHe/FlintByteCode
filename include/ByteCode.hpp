@@ -135,16 +135,16 @@ private:
 
 class NativeFunction : public ICompilable {
 public:
-  NativeFunction(std::string functionName, int argsSize,
-                 int nativeLibraryOffset)
+  NativeFunction(std::string functionName, uint16_t argsSize,
+                 int32_t nativeLibraryOffset)
       : functionName{functionName}, argsSize{argsSize},
         nativeLibraryOffset{nativeLibraryOffset} {}
   void Compile(ByteCode &byteCode) override;
 
 private:
   std::string functionName;
-  int argsSize;
-  int nativeLibraryOffset;
+  uint16_t argsSize;
+  int32_t nativeLibraryOffset;
 };
 
 class ByteCodeProgram : public ICompilable {
@@ -167,6 +167,7 @@ private:
   std::vector<NativeFunction> nativeFunctions;
   int entryPoint;
 };
+
 }; /* namespace flint_bytecode */
 
 #endif /* FLINT_BYTE_CODE_BYTE_CODE_HPP */
