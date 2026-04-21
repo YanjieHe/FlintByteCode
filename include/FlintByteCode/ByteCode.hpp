@@ -1,13 +1,13 @@
 #ifndef FLINT_BYTE_CODE_BYTE_CODE_HPP
 #define FLINT_BYTE_CODE_BYTE_CODE_HPP
 
+#include "FlintByteCode/OpCode.hpp"
+#include <any>
+#include <cmath>
+#include <cstdint>
+#include <stdexcept>
 #include <string>
 #include <vector>
-#include <any>
-#include <stdexcept>
-#include <cstdint>
-#include <cmath>
-#include "OpCode.hpp"
 
 namespace flint_bytecode {
 using Byte = uint8_t;
@@ -69,6 +69,7 @@ enum class ConstantKind {
 
 class Constant : public ICompilable {
 public:
+  Constant() = default;
   Constant(ConstantKind constantKind, std::any value)
       : constantKind{constantKind}, value{value} {}
 
@@ -84,6 +85,7 @@ private:
 
 class GlobalVariable : public ICompilable {
 public:
+  GlobalVariable() = default;
   GlobalVariable(std::string name, int initializerOffset)
       : name{name}, initializerOffset{initializerOffset} {}
 
@@ -94,20 +96,39 @@ private:
   int initializerOffset;
 };
 
+class VTableEntry : public ICompilable {
+public:
+  VTableEntry(uint16_t interfaceIndex,
+              const std::vector<int32_t> &methodFunctionIndices)
+      : interfaceIndex{interfaceIndex},
+        methodFunctionIndices{methodFunctionIndices} {}
+
+  void Compile(ByteCode &byteCode) override;
+
+private:
+  uint16_t interfaceIndex;
+  std::vector<int32_t> methodFunctionIndices;
+};
+
 class StructureMeta : public ICompilable {
 public:
-  StructureMeta(std::string name, std::vector<std::string> fieldNames)
-      : name{name}, fieldNames{fieldNames} {}
+  StructureMeta() = default;
+  StructureMeta(const std::string &name,
+                const std::vector<std::string> &fieldNames,
+                const std::vector<VTableEntry> &vTableEntries)
+      : name{name}, fieldNames{fieldNames}, vTableEntries{vTableEntries} {}
 
   void Compile(ByteCode &byteCode) override;
 
 private:
   std::string name;
   std::vector<std::string> fieldNames;
+  std::vector<VTableEntry> vTableEntries;
 };
 
 class Function : public ICompilable {
 public:
+  Function() = default;
   Function(std::string name, Byte stack, Byte locals, Byte argsSize,
            std::vector<Constant> constantPool, ByteCode code)
       : name{name}, stack{stack}, locals{locals}, argsSize{argsSize},
@@ -135,6 +156,7 @@ private:
 
 class NativeFunction : public ICompilable {
 public:
+  NativeFunction() = default;
   NativeFunction(std::string functionName, uint16_t argsSize,
                  int32_t nativeLibraryOffset)
       : functionName{functionName}, argsSize{argsSize},
@@ -149,6 +171,7 @@ private:
 
 class ByteCodeProgram : public ICompilable {
 public:
+  ByteCodeProgram() = default;
   ByteCodeProgram(std::vector<GlobalVariable> globalVariables,
                   std::vector<StructureMeta> structures,
                   std::vector<Function> functions,
@@ -165,7 +188,7 @@ private:
   std::vector<Function> functions;
   std::vector<NativeLibrary> nativeLibraries;
   std::vector<NativeFunction> nativeFunctions;
-  int entryPoint;
+  int32_t entryPoint;
 };
 
 }; /* namespace flint_bytecode */

@@ -1,5 +1,5 @@
 #include <catch2/catch.hpp>
-#include "ByteCode.hpp"
+#include "FlintByteCode/ByteCode.hpp"
 
 using std::string;
 using namespace flint_bytecode;

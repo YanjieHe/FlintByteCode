@@ -1,7 +1,7 @@
-#include "ByteCode.hpp"
-#include <iostream>
-#include <fstream>
+#include "FlintByteCode/ByteCode.hpp"
 #include <bit_converter/bit_converter.hpp>
+#include <fstream>
+#include <iostream>
 
 namespace flint_bytecode {
 void ByteCode::AddOp(OpCode op) { bytes.push_back(static_cast<Byte>(op)); }
@@ -107,7 +107,9 @@ void Constant::Compile(ByteCode &byteCode) {
     byteCode.AddString(std::any_cast<std::string>(this->value));
     break;
   }
-  default: { throw std::invalid_argument("constant kind"); }
+  default: {
+    throw std::invalid_argument("constant kind");
+  }
   }
 }
 
@@ -116,11 +118,23 @@ void GlobalVariable::Compile(ByteCode &byteCode) {
   byteCode.AddI32(this->initializerOffset);
 }
 
+void VTableEntry::Compile(ByteCode &byteCode) {
+  byteCode.AddU16(this->interfaceIndex);
+  byteCode.AddU16(this->methodFunctionIndices.size());
+  for (int32_t methodFunctionIndex : this->methodFunctionIndices) {
+    byteCode.AddI32(methodFunctionIndex);
+  }
+}
+
 void StructureMeta::Compile(ByteCode &byteCode) {
   byteCode.AddString(this->name);
   byteCode.AddU16(this->fieldNames.size());
   for (const auto &fieldName : this->fieldNames) {
     byteCode.AddString(fieldName);
+  }
+  byteCode.AddU16(this->vTableEntries.size());
+  for (VTableEntry &vTableEntry : this->vTableEntries) {
+    vTableEntry.Compile(byteCode);
   }
 }
 

@@ -1,13 +1,10 @@
-file(GLOB SOURCES
-    ${PROJECT_SOURCE_DIR}/src/*.cpp)
-
 file(GLOB TESTS
-    ${PROJECT_SOURCE_DIR}/tests/*.cpp)
+    ${CMAKE_CURRENT_SOURCE_DIR}/*.cpp)
 
-include_directories(
-    ${PROJECT_SOURCE_DIR}/libs/
-    ${PROJECT_SOURCE_DIR}/include/)
+add_executable(FlintByteCodeTest ${TESTS})
 
-add_executable(FlintByteCodeTest
-    ${SOURCES}
-    ${TESTS})
+target_link_libraries(FlintByteCodeTest PRIVATE flint_bytecode)
+
+target_include_directories(FlintByteCodeTest
+    PRIVATE
+        ${PROJECT_SOURCE_DIR}/libs)

@@ -1,10 +1,10 @@
 file(GLOB SOURCES
-    ${PROJECT_SOURCE_DIR}/src/*.cpp)
+    ${CMAKE_CURRENT_SOURCE_DIR}/*.cpp)
 
-include_directories(
-    ${PROJECT_SOURCE_DIR}/libs/
-    ${PROJECT_SOURCE_DIR}/include/)
+add_library(flint_bytecode STATIC ${SOURCES})
 
-add_executable(FlintByteCode
-    ${PROJECT_SOURCE_DIR}/Main.cpp
-    ${SOURCES})
+target_include_directories(flint_bytecode
+    PUBLIC
+        ${PROJECT_SOURCE_DIR}/include
+    PRIVATE
+        ${PROJECT_SOURCE_DIR}/libs)
