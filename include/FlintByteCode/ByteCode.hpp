@@ -98,6 +98,7 @@ private:
 
 class VTableEntry : public ICompilable {
 public:
+  VTableEntry() = default;
   VTableEntry(uint16_t interfaceIndex,
               const std::vector<int32_t> &methodFunctionIndices)
       : interfaceIndex{interfaceIndex},
