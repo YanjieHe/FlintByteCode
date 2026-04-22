@@ -87,7 +87,9 @@ void Constant::Compile(ByteCode &byteCode) {
   case ConstantKind::CONSTANT_KIND_FUNCTION:
   case ConstantKind::CONSTANT_KIND_GLOBAL_VARIABLE:
   case ConstantKind::CONSTANT_KIND_STRUCTURE_META_DATA:
-  case ConstantKind::CONSTANT_KIND_NATIVE_FUNCTION: {
+  case ConstantKind::CONSTANT_KIND_NATIVE_FUNCTION:
+  case ConstantKind::CONSTANT_KIND_INTERFACE_META_DATA:
+  case ConstantKind::CONSTANT_KIND_INTERFACE_METHOD_REFERENCE: {
     byteCode.AddI32(std::any_cast<int32_t>(this->value));
     break;
   }
@@ -163,12 +165,19 @@ void NativeFunction::Compile(ByteCode &byteCode) {
   byteCode.AddI32(this->nativeLibraryOffset);
 }
 
+void InterfaceMethodRef::Compile(ByteCode &byteCode) {
+  byteCode.AddI32(this->interfaceIndex);
+  byteCode.AddU16(this->methodIndex);
+  byteCode.AddU16(this->argsSize);
+}
+
 void ByteCodeProgram::Compile(ByteCode &byte_code) {
   byte_code.AddI32(this->globalVariables.size());
   byte_code.AddI32(this->structures.size());
   byte_code.AddI32(this->functions.size());
   byte_code.AddI32(this->nativeLibraries.size());
   byte_code.AddI32(this->nativeFunctions.size());
+  byte_code.AddI32(this->interfaceMethodReferences.size());
   byte_code.AddI32(this->entryPoint);
 
   for (auto &globalVariable : this->globalVariables) {
@@ -189,6 +198,10 @@ void ByteCodeProgram::Compile(ByteCode &byte_code) {
 
   for (auto &nativeFunction : this->nativeFunctions) {
     nativeFunction.Compile(byte_code);
+  }
+
+  for (auto &interfaceMethodRef : this->interfaceMethodReferences) {
+    interfaceMethodRef.Compile(byte_code);
   }
 }
 

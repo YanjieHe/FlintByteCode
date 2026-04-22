@@ -65,7 +65,8 @@ enum class ConstantKind {
   CONSTANT_KIND_STRUCTURE_META_DATA = 6,
   CONSTANT_KIND_GLOBAL_VARIABLE = 7,
   CONSTANT_KIND_NATIVE_FUNCTION = 8,
-  CONSTANT_KIND_INTERFACE_META_DATA = 9
+  CONSTANT_KIND_INTERFACE_META_DATA = 9,
+  CONSTANT_KIND_INTERFACE_METHOD_REFERENCE = 10
 };
 
 class Constant : public ICompilable {
@@ -171,6 +172,21 @@ private:
   int32_t nativeLibraryOffset;
 };
 
+class InterfaceMethodRef : public ICompilable {
+public:
+  InterfaceMethodRef() = default;
+  InterfaceMethodRef(int32_t interfaceIndex, uint16_t methodIndex,
+                     uint16_t argsSize)
+      : interfaceIndex{interfaceIndex}, methodIndex{methodIndex},
+        argsSize{argsSize} {}
+  void Compile(ByteCode &byteCode) override;
+
+private:
+  int32_t interfaceIndex;
+  uint16_t methodIndex;
+  uint16_t argsSize;
+};
+
 class ByteCodeProgram : public ICompilable {
 public:
   ByteCodeProgram() = default;
@@ -178,11 +194,15 @@ public:
                   std::vector<StructureMeta> structures,
                   std::vector<Function> functions,
                   std::vector<NativeLibrary> nativeLibraries,
-                  std::vector<NativeFunction> nativeFunctions, int entryPoint)
+                  std::vector<NativeFunction> nativeFunctions,
+                  std::vector<InterfaceMethodRef> interfaceMethodReferences,
+                  int entryPoint)
       : globalVariables{globalVariables}, structures{structures},
         functions{functions}, nativeLibraries{nativeLibraries},
-        nativeFunctions{nativeFunctions}, entryPoint{entryPoint} {}
-  void Compile(ByteCode &byte_code);
+        nativeFunctions{nativeFunctions},
+        interfaceMethodReferences{interfaceMethodReferences},
+        entryPoint{entryPoint} {}
+  void Compile(ByteCode &byte_code) override;
 
 private:
   std::vector<GlobalVariable> globalVariables;
@@ -190,6 +210,7 @@ private:
   std::vector<Function> functions;
   std::vector<NativeLibrary> nativeLibraries;
   std::vector<NativeFunction> nativeFunctions;
+  std::vector<InterfaceMethodRef> interfaceMethodReferences;
   int32_t entryPoint;
 };
 

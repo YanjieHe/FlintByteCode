@@ -80,7 +80,7 @@ TEST_CASE("test jump (end-to-end)", "[Label]") {
   functionCode.AddOp(OpCode::HALT);
 
   Function function("Main", 0, 0, 0, {}, functionCode);
-  ByteCodeProgram program({}, {}, {function}, {}, {}, 0);
+  ByteCodeProgram program({}, {}, {function}, {}, {}, {}, 0);
   ByteCode byteCode;
   program.Compile(byteCode);
 
@@ -88,10 +88,10 @@ TEST_CASE("test jump (end-to-end)", "[Label]") {
 
   // Program header
   REQUIRE(read_i32(bytes, 8) == 1);  // 1 function
-  REQUIRE(read_i32(bytes, 20) == 0); // entry point = 0
+  REQUIRE(read_i32(bytes, 24) == 0); // entry point = 0
 
-  // Function "Main" starts at offset 24
-  size_t pos = 24;
+  // Function "Main" starts at offset 28
+  size_t pos = 28;
   REQUIRE(read_string(bytes, pos) == "Main");
   pos += string_size("Main");
   pos += 4; // skip stack, locals, argsSize, constantPoolCount

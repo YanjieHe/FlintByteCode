@@ -15,7 +15,7 @@ TEST_CASE("test (70 > 5)", "[Comparison]") {
   functionCode.AddOp(OpCode::GT_I32);
   functionCode.AddOp(OpCode::HALT);
   Function function("Main", 0, 0, 0, {}, functionCode);
-  ByteCodeProgram program({}, {}, {function}, {}, {}, 0);
+  ByteCodeProgram program({}, {}, {function}, {}, {}, {}, 0);
   ByteCode byteCode;
   program.Compile(byteCode);
 
@@ -23,10 +23,10 @@ TEST_CASE("test (70 > 5)", "[Comparison]") {
 
   // Program header
   REQUIRE(read_i32(bytes, 8) == 1);  // 1 function
-  REQUIRE(read_i32(bytes, 20) == 0); // entry point = 0
+  REQUIRE(read_i32(bytes, 24) == 0); // entry point = 0
 
-  // Function "Main" starts at offset 24
-  size_t pos = 24;
+  // Function "Main" starts at offset 28
+  size_t pos = 28;
   REQUIRE(read_string(bytes, pos) == "Main");
   pos += string_size("Main");
   pos += 4; // skip stack, locals, argsSize, constantPoolCount (all 0)
@@ -68,7 +68,7 @@ TEST_CASE("test (3.5 < 17.2)", "[Comparison]") {
       Constant(ConstantKind::CONSTANT_KIND_F32, float_t(17.2)));
 
   Function function("Main", 0, 0, 0, constantPool, functionCode);
-  ByteCodeProgram program({}, {}, {function}, {}, {}, 0);
+  ByteCodeProgram program({}, {}, {function}, {}, {}, {}, 0);
   ByteCode byteCode;
   program.Compile(byteCode);
 
@@ -76,10 +76,10 @@ TEST_CASE("test (3.5 < 17.2)", "[Comparison]") {
 
   // Program header
   REQUIRE(read_i32(bytes, 8) == 1);  // 1 function
-  REQUIRE(read_i32(bytes, 20) == 0); // entry point = 0
+  REQUIRE(read_i32(bytes, 24) == 0); // entry point = 0
 
-  // Function "Main" starts at offset 24
-  size_t pos = 24;
+  // Function "Main" starts at offset 28
+  size_t pos = 28;
   REQUIRE(read_string(bytes, pos) == "Main");
   pos += string_size("Main");
   pos += 3;                 // skip stack, locals, argsSize

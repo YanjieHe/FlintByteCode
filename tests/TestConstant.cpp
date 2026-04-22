@@ -110,3 +110,17 @@ TEST_CASE("Constant NATIVE_FUNCTION uses i32 encoding", "[Constant]") {
   REQUIRE(bc.Size() == 5);
   REQUIRE(read_i32(bc.GetBytes(), 1) == 99);
 }
+
+TEST_CASE("Constant INTERFACE_METHOD_REFERENCE uses i32 encoding",
+          "[Constant]") {
+  Constant c(ConstantKind::CONSTANT_KIND_INTERFACE_METHOD_REFERENCE,
+             int32_t(42));
+  ByteCode bc;
+  c.Compile(bc);
+
+  REQUIRE(bc.Size() == 5);
+  REQUIRE(bc.GetBytes()[0] ==
+          static_cast<Byte>(
+              ConstantKind::CONSTANT_KIND_INTERFACE_METHOD_REFERENCE));
+  REQUIRE(read_i32(bc.GetBytes(), 1) == 42);
+}

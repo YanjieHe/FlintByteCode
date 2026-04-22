@@ -106,7 +106,9 @@ TEST_CASE("ByteCodeProgram header has correct counts", "[ByteCodeProgram]") {
   NativeLibrary nl("lib.so");
   NativeFunction nf("func", 0, 0);
 
-  ByteCodeProgram program({gv}, {sm}, {fn}, {nl}, {nf}, 0);
+  InterfaceMethodRef imr(0, 1, 2);
+
+  ByteCodeProgram program({gv}, {sm}, {fn}, {nl}, {nf}, {imr}, 0);
   ByteCode bc;
   program.Compile(bc);
 
@@ -116,18 +118,19 @@ TEST_CASE("ByteCodeProgram header has correct counts", "[ByteCodeProgram]") {
   REQUIRE(read_i32(b, 8) == 1);  // functions count
   REQUIRE(read_i32(b, 12) == 1); // nativeLibraries count
   REQUIRE(read_i32(b, 16) == 1); // nativeFunctions count
-  REQUIRE(read_i32(b, 20) == 0); // entryPoint
+  REQUIRE(read_i32(b, 20) == 1); // interfaceMethodReferences count
+  REQUIRE(read_i32(b, 24) == 0); // entryPoint
 }
 
 TEST_CASE("ByteCodeProgram empty program", "[ByteCodeProgram]") {
-  ByteCodeProgram program({}, {}, {}, {}, {}, 0);
+  ByteCodeProgram program({}, {}, {}, {}, {}, {}, 0);
   ByteCode bc;
   program.Compile(bc);
 
-  // header: 6 x i32 = 24 bytes, all zeros
-  REQUIRE(bc.Size() == 24);
+  // header: 7 x i32 = 28 bytes, all zeros
+  REQUIRE(bc.Size() == 28);
   auto &b = bc.GetBytes();
-  for (int i = 0; i < 6; i++) {
+  for (int i = 0; i < 7; i++) {
     REQUIRE(read_i32(b, i * 4) == 0);
   }
 }
