@@ -144,8 +144,8 @@ TEST_CASE("VTableEntry compiles interface index and method indices",
   auto &b = bc.GetBytes();
   size_t pos = 0;
 
-  REQUIRE(read_u16(b, pos) == 5); // interfaceIndex
-  pos += 2;
+  REQUIRE(read_i32(b, pos) == 5); // interfaceIndex
+  pos += 4;
 
   REQUIRE(read_u16(b, pos) == 3); // method count
   pos += 2;
@@ -163,7 +163,7 @@ TEST_CASE("VTableEntry with empty methods", "[VTableEntry]") {
   entry.Compile(bc);
 
   auto &b = bc.GetBytes();
-  REQUIRE(read_u16(b, 0) == 0);
-  REQUIRE(read_u16(b, 2) == 0);
-  REQUIRE(bc.Size() == 4); // just two u16 fields
+  REQUIRE(read_i32(b, 0) == 0);
+  REQUIRE(read_u16(b, 4) == 0);
+  REQUIRE(bc.Size() == 6); // i32 + u16 fields
 }

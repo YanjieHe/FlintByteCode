@@ -64,7 +64,8 @@ enum class ConstantKind {
   CONSTANT_KIND_FUNCTION = 5,
   CONSTANT_KIND_STRUCTURE_META_DATA = 6,
   CONSTANT_KIND_GLOBAL_VARIABLE = 7,
-  CONSTANT_KIND_NATIVE_FUNCTION = 8
+  CONSTANT_KIND_NATIVE_FUNCTION = 8,
+  CONSTANT_KIND_INTERFACE_META_DATA = 9
 };
 
 class Constant : public ICompilable {
@@ -99,7 +100,7 @@ private:
 class VTableEntry : public ICompilable {
 public:
   VTableEntry() = default;
-  VTableEntry(uint16_t interfaceIndex,
+  VTableEntry(int32_t interfaceIndex,
               const std::vector<int32_t> &methodFunctionIndices)
       : interfaceIndex{interfaceIndex},
         methodFunctionIndices{methodFunctionIndices} {}
@@ -107,7 +108,7 @@ public:
   void Compile(ByteCode &byteCode) override;
 
 private:
-  uint16_t interfaceIndex;
+  int32_t interfaceIndex;
   std::vector<int32_t> methodFunctionIndices;
 };
 

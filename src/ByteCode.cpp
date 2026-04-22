@@ -119,7 +119,7 @@ void GlobalVariable::Compile(ByteCode &byteCode) {
 }
 
 void VTableEntry::Compile(ByteCode &byteCode) {
-  byteCode.AddU16(this->interfaceIndex);
+  byteCode.AddI32(this->interfaceIndex);
   byteCode.AddU16(this->methodFunctionIndices.size());
   for (int32_t methodFunctionIndex : this->methodFunctionIndices) {
     byteCode.AddI32(methodFunctionIndex);

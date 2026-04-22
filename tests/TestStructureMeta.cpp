@@ -78,8 +78,8 @@ TEST_CASE("StructureMeta with vtable entries", "[StructureMeta]") {
   pos += 2;
 
   // vtable entry 0: interfaceIndex=0, 2 methods [1, 2]
-  REQUIRE(read_u16(b, pos) == 0);
-  pos += 2;
+  REQUIRE(read_i32(b, pos) == 0);
+  pos += 4;
   REQUIRE(read_u16(b, pos) == 2);
   pos += 2;
   REQUIRE(read_i32(b, pos) == 1);
@@ -88,8 +88,8 @@ TEST_CASE("StructureMeta with vtable entries", "[StructureMeta]") {
   pos += 4;
 
   // vtable entry 1: interfaceIndex=1, 1 method [3]
-  REQUIRE(read_u16(b, pos) == 1);
-  pos += 2;
+  REQUIRE(read_i32(b, pos) == 1);
+  pos += 4;
   REQUIRE(read_u16(b, pos) == 1);
   pos += 2;
   REQUIRE(read_i32(b, pos) == 3);
