@@ -88,14 +88,14 @@ private:
 class GlobalVariable : public ICompilable {
 public:
   GlobalVariable() = default;
-  GlobalVariable(std::string name, int initializerOffset)
+  GlobalVariable(std::string name, int32_t initializerOffset)
       : name{name}, initializerOffset{initializerOffset} {}
 
   void Compile(ByteCode &byteCode) override;
 
 private:
   std::string name;
-  int initializerOffset;
+  int32_t initializerOffset;
 };
 
 class VTableEntry : public ICompilable {
