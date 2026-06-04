@@ -171,6 +171,15 @@ void InterfaceMethodRef::Compile(ByteCode &byteCode) {
   byteCode.AddU16(this->argsSize);
 }
 
+void InterfaceMeta::Compile(ByteCode &byteCode) {
+  byteCode.AddI32(this->interfaceIndex);
+  byteCode.AddString(this->name);
+  byteCode.AddU16(this->methodNames.size());
+  for (const std::string &methodName : this->methodNames) {
+    byteCode.AddString(methodName);
+  }
+}
+
 void ByteCodeProgram::Compile(ByteCode &byte_code) {
   byte_code.AddI32(this->globalVariables.size());
   byte_code.AddI32(this->structures.size());
@@ -178,6 +187,7 @@ void ByteCodeProgram::Compile(ByteCode &byte_code) {
   byte_code.AddI32(this->nativeLibraries.size());
   byte_code.AddI32(this->nativeFunctions.size());
   byte_code.AddI32(this->interfaceMethodReferences.size());
+  byte_code.AddI32(this->interfaces.size());
   byte_code.AddI32(this->entryPoint);
 
   for (auto &globalVariable : this->globalVariables) {
@@ -202,6 +212,10 @@ void ByteCodeProgram::Compile(ByteCode &byte_code) {
 
   for (auto &interfaceMethodRef : this->interfaceMethodReferences) {
     interfaceMethodRef.Compile(byte_code);
+  }
+
+  for (auto &interfaceMeta : this->interfaces) {
+    interfaceMeta.Compile(byte_code);
   }
 }
 

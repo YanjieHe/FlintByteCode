@@ -187,6 +187,20 @@ private:
   uint16_t argsSize;
 };
 
+class InterfaceMeta : public ICompilable {
+public:
+  InterfaceMeta() = default;
+  InterfaceMeta(int32_t interfaceIndex, const std::string &name,
+                const std::vector<std::string> &methodNames)
+      : interfaceIndex{interfaceIndex}, name{name}, methodNames{methodNames} {}
+  void Compile(ByteCode &byteCode) override;
+
+private:
+  int32_t interfaceIndex;
+  std::string name;
+  std::vector<std::string> methodNames;
+};
+
 class ByteCodeProgram : public ICompilable {
 public:
   ByteCodeProgram() = default;
@@ -196,12 +210,12 @@ public:
                   std::vector<NativeLibrary> nativeLibraries,
                   std::vector<NativeFunction> nativeFunctions,
                   std::vector<InterfaceMethodRef> interfaceMethodReferences,
-                  int entryPoint)
+                  std::vector<InterfaceMeta> interfaces, int entryPoint)
       : globalVariables{globalVariables}, structures{structures},
         functions{functions}, nativeLibraries{nativeLibraries},
         nativeFunctions{nativeFunctions},
         interfaceMethodReferences{interfaceMethodReferences},
-        entryPoint{entryPoint} {}
+        interfaces{interfaces}, entryPoint{entryPoint} {}
   void Compile(ByteCode &byte_code) override;
 
 private:
@@ -211,6 +225,7 @@ private:
   std::vector<NativeLibrary> nativeLibraries;
   std::vector<NativeFunction> nativeFunctions;
   std::vector<InterfaceMethodRef> interfaceMethodReferences;
+  std::vector<InterfaceMeta> interfaces;
   int32_t entryPoint;
 };
 
