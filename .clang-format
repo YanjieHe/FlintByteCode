@@ -1,0 +1,21 @@
+---
+Language: Cpp
+BasedOnStyle: LLVM
+
+# Match the style already used by this repository.
+IndentWidth: 2
+ContinuationIndentWidth: 4
+TabWidth: 2
+UseTab: Never
+ColumnLimit: 80
+BreakBeforeBraces: Attach
+NamespaceIndentation: None
+IndentCaseLabels: false
+PointerAlignment: Right
+DerivePointerAlignment: false
+AllowShortFunctionsOnASingleLine: All
+
+# Avoid unrelated churn when formatting existing files.
+SortIncludes: Never
+FixNamespaceComments: false
+...
