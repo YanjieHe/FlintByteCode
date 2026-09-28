@@ -108,6 +108,9 @@ public:
 
   void Compile(ByteCode &byteCode) override;
 
+  int32_t InterfaceIndex() const;
+  const std::vector<int32_t> &MethodFunctionIndices() const;
+
 private:
   int32_t interfaceIndex;
   std::vector<int32_t> methodFunctionIndices;
@@ -122,6 +125,10 @@ public:
       : name{name}, fieldNames{fieldNames}, vTableEntries{vTableEntries} {}
 
   void Compile(ByteCode &byteCode) override;
+
+  const std::string &Name() const;
+  const std::vector<std::string> &FieldNames() const;
+  const std::vector<VTableEntry> &VTableEntries() const;
 
 private:
   std::string name;
@@ -217,6 +224,15 @@ public:
         interfaceMethodReferences{interfaceMethodReferences},
         interfaces{interfaces}, entryPoint{entryPoint} {}
   void Compile(ByteCode &byte_code) override;
+
+  const std::vector<GlobalVariable> &GlobalVariables() const;
+  const std::vector<StructureMeta> &Structures() const;
+  const std::vector<Function> &Functions() const;
+  const std::vector<NativeLibrary> &NativeLibraries() const;
+  const std::vector<NativeFunction> &NativeFunctions() const;
+  const std::vector<InterfaceMethodRef> &InterfaceMethodReferences() const;
+  const std::vector<InterfaceMeta> &Interfaces() const;
+  int32_t EntryPoint() const;
 
 private:
   std::vector<GlobalVariable> globalVariables;

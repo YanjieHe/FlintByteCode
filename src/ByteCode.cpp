@@ -128,6 +128,11 @@ void VTableEntry::Compile(ByteCode &byteCode) {
   }
 }
 
+int32_t VTableEntry::InterfaceIndex() const { return interfaceIndex; }
+const std::vector<int32_t> &VTableEntry::MethodFunctionIndices() const {
+  return methodFunctionIndices;
+}
+
 void StructureMeta::Compile(ByteCode &byteCode) {
   byteCode.AddString(this->name);
   byteCode.AddU16(this->fieldNames.size());
@@ -138,6 +143,16 @@ void StructureMeta::Compile(ByteCode &byteCode) {
   for (VTableEntry &vTableEntry : this->vTableEntries) {
     vTableEntry.Compile(byteCode);
   }
+}
+
+const std::string &StructureMeta::Name() const { return name; }
+
+const std::vector<std::string> &StructureMeta::FieldNames() const {
+  return fieldNames;
+}
+
+const std::vector<VTableEntry> &StructureMeta::VTableEntries() const {
+  return vTableEntries;
 }
 
 void Function::Compile(ByteCode &byteCode) {
@@ -218,5 +233,29 @@ void ByteCodeProgram::Compile(ByteCode &byte_code) {
     interfaceMeta.Compile(byte_code);
   }
 }
+
+const std::vector<GlobalVariable> &ByteCodeProgram::GlobalVariables() const {
+  return globalVariables;
+}
+const std::vector<StructureMeta> &ByteCodeProgram::Structures() const {
+  return structures;
+}
+const std::vector<Function> &ByteCodeProgram::Functions() const {
+  return functions;
+}
+const std::vector<NativeLibrary> &ByteCodeProgram::NativeLibraries() const {
+  return nativeLibraries;
+}
+const std::vector<NativeFunction> &ByteCodeProgram::NativeFunctions() const {
+  return nativeFunctions;
+}
+const std::vector<InterfaceMethodRef> &
+ByteCodeProgram::InterfaceMethodReferences() const {
+  return interfaceMethodReferences;
+}
+const std::vector<InterfaceMeta> &ByteCodeProgram::Interfaces() const {
+  return interfaces;
+}
+int32_t ByteCodeProgram::EntryPoint() const { return entryPoint; }
 
 }; /* namespace flint_bytecode */
