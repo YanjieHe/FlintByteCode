@@ -170,6 +170,15 @@ void Function::Compile(ByteCode &byteCode) {
   }
 }
 
+const std::string &Function::Name() const { return name; }
+Byte Function::Stack() const { return stack; }
+Byte Function::Locals() const { return locals; }
+Byte Function::ArgsSize() const { return argsSize; }
+const std::vector<Constant> &Function::ConstantPool() const {
+  return constantPool;
+}
+const ByteCode &Function::Code() const { return code; }
+
 void NativeLibrary::Compile(ByteCode &byteCode) {
   byteCode.AddString(this->libraryPath);
 }

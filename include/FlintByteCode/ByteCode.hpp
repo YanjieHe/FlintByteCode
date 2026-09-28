@@ -146,6 +146,13 @@ public:
 
   void Compile(ByteCode &byteCode) override;
 
+  const std::string &Name() const;
+  Byte Stack() const;
+  Byte Locals() const;
+  Byte ArgsSize() const;
+  const std::vector<Constant> &ConstantPool() const;
+  const ByteCode &Code() const;
+
 private:
   std::string name;
   Byte stack;
