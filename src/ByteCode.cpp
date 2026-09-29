@@ -230,7 +230,6 @@ void ByteCodeProgram::Compile(ByteCode &byte_code) {
   byte_code.AddI32(this->functions.size());
   byte_code.AddI32(this->nativeLibraries.size());
   byte_code.AddI32(this->nativeFunctions.size());
-  byte_code.AddI32(this->interfaceMethodReferences.size());
   byte_code.AddI32(this->interfaces.size());
   byte_code.AddI32(this->entryPoint);
 
@@ -254,10 +253,6 @@ void ByteCodeProgram::Compile(ByteCode &byte_code) {
     nativeFunction.Compile(byte_code);
   }
 
-  for (auto &interfaceMethodRef : this->interfaceMethodReferences) {
-    interfaceMethodRef.Compile(byte_code);
-  }
-
   for (auto &interfaceMeta : this->interfaces) {
     interfaceMeta.Compile(byte_code);
   }
@@ -277,10 +272,6 @@ const std::vector<NativeLibrary> &ByteCodeProgram::NativeLibraries() const {
 }
 const std::vector<NativeFunction> &ByteCodeProgram::NativeFunctions() const {
   return nativeFunctions;
-}
-const std::vector<InterfaceMethodRef> &
-ByteCodeProgram::InterfaceMethodReferences() const {
-  return interfaceMethodReferences;
 }
 const std::vector<InterfaceMeta> &ByteCodeProgram::Interfaces() const {
   return interfaces;

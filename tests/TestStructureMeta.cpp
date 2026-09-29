@@ -106,10 +106,9 @@ TEST_CASE("ByteCodeProgram header has correct counts", "[ByteCodeProgram]") {
   NativeLibrary nl("libmath.so");
   NativeFunction nf("sqrt", 0, 0);
 
-  InterfaceMethodRef imr(0, 1);
   InterfaceMeta im(0, "Drawable", {{"draw", 0}});
 
-  ByteCodeProgram program({gv}, {sm}, {fn}, {nl}, {nf}, {imr}, {im}, 0);
+  ByteCodeProgram program({gv}, {sm}, {fn}, {nl}, {nf}, {im}, 0);
   ByteCode bc;
   program.Compile(bc);
 
@@ -119,20 +118,19 @@ TEST_CASE("ByteCodeProgram header has correct counts", "[ByteCodeProgram]") {
   REQUIRE(read_i32(b, 8) == 1);  // functions count
   REQUIRE(read_i32(b, 12) == 1); // nativeLibraries count
   REQUIRE(read_i32(b, 16) == 1); // nativeFunctions count
-  REQUIRE(read_i32(b, 20) == 1); // interfaceMethodReferences count
-  REQUIRE(read_i32(b, 24) == 1); // interfaces count
-  REQUIRE(read_i32(b, 28) == 0); // entryPoint
+  REQUIRE(read_i32(b, 20) == 1); // interfaces count
+  REQUIRE(read_i32(b, 24) == 0); // entryPoint
 }
 
 TEST_CASE("ByteCodeProgram empty program", "[ByteCodeProgram]") {
-  ByteCodeProgram program({}, {}, {}, {}, {}, {}, {}, 0);
+  ByteCodeProgram program({}, {}, {}, {}, {}, {}, 0);
   ByteCode bc;
   program.Compile(bc);
 
-  // header: 8 x i32 = 32 bytes, all zeros
-  REQUIRE(bc.Size() == 32);
+  // header: 7 x i32 = 28 bytes, all zeros
+  REQUIRE(bc.Size() == 28);
   auto &b = bc.GetBytes();
-  for (int i = 0; i < 8; i++) {
+  for (int i = 0; i < 7; i++) {
     REQUIRE(read_i32(b, i * 4) == 0);
   }
 }

@@ -241,13 +241,11 @@ public:
                   std::vector<Function> functions,
                   std::vector<NativeLibrary> nativeLibraries,
                   std::vector<NativeFunction> nativeFunctions,
-                  std::vector<InterfaceMethodRef> interfaceMethodReferences,
                   std::vector<InterfaceMeta> interfaces, int entryPoint)
       : globalVariables{globalVariables}, structures{structures},
         functions{functions}, nativeLibraries{nativeLibraries},
-        nativeFunctions{nativeFunctions},
-        interfaceMethodReferences{interfaceMethodReferences},
-        interfaces{interfaces}, entryPoint{entryPoint} {}
+        nativeFunctions{nativeFunctions}, interfaces{interfaces},
+        entryPoint{entryPoint} {}
   void Compile(ByteCode &byte_code) override;
 
   const std::vector<GlobalVariable> &GlobalVariables() const;
@@ -255,7 +253,6 @@ public:
   const std::vector<Function> &Functions() const;
   const std::vector<NativeLibrary> &NativeLibraries() const;
   const std::vector<NativeFunction> &NativeFunctions() const;
-  const std::vector<InterfaceMethodRef> &InterfaceMethodReferences() const;
   const std::vector<InterfaceMeta> &Interfaces() const;
   int32_t EntryPoint() const;
 
@@ -265,7 +262,6 @@ private:
   std::vector<Function> functions;
   std::vector<NativeLibrary> nativeLibraries;
   std::vector<NativeFunction> nativeFunctions;
-  std::vector<InterfaceMethodRef> interfaceMethodReferences;
   std::vector<InterfaceMeta> interfaces;
   int32_t entryPoint;
 };
