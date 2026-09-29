@@ -88,8 +88,7 @@ void Constant::Compile(ByteCode &byteCode) {
   case ConstantKind::CONSTANT_KIND_GLOBAL_VARIABLE:
   case ConstantKind::CONSTANT_KIND_STRUCTURE_META_DATA:
   case ConstantKind::CONSTANT_KIND_NATIVE_FUNCTION:
-  case ConstantKind::CONSTANT_KIND_INTERFACE_META_DATA:
-  case ConstantKind::CONSTANT_KIND_INTERFACE_METHOD_REFERENCE: {
+  case ConstantKind::CONSTANT_KIND_INTERFACE_META_DATA: {
     byteCode.AddI32(std::any_cast<int32_t>(this->value));
     break;
   }
@@ -107,6 +106,12 @@ void Constant::Compile(ByteCode &byteCode) {
   }
   case ConstantKind::CONSTANT_KIND_STRING: {
     byteCode.AddString(std::any_cast<std::string>(this->value));
+    break;
+  }
+  case ConstantKind::CONSTANT_KIND_INTERFACE_METHOD_REFERENCE: {
+    InterfaceMethodRef &reference = std::any_cast<InterfaceMethodRef &>(value);
+    reference.Compile(byteCode);
+
     break;
   }
   default: {
