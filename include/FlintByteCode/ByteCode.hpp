@@ -201,18 +201,36 @@ private:
   uint16_t argsSize;
 };
 
+class InterfaceMethodMeta {
+public:
+  InterfaceMethodMeta() = default;
+  InterfaceMethodMeta(const std::string &name, uint16_t argsSize)
+      : name{name}, argsSize{argsSize} {}
+
+  const std::string &Name() const;
+  uint16_t ArgsSize() const;
+
+private:
+  std::string name;
+  uint16_t argsSize;
+};
+
 class InterfaceMeta : public ICompilable {
 public:
   InterfaceMeta() = default;
   InterfaceMeta(int32_t interfaceIndex, const std::string &name,
-                const std::vector<std::string> &methodNames)
-      : interfaceIndex{interfaceIndex}, name{name}, methodNames{methodNames} {}
+                const std::vector<InterfaceMethodMeta> &methods)
+      : interfaceIndex{interfaceIndex}, name{name}, methods{methods} {}
   void Compile(ByteCode &byteCode) override;
+
+  int32_t InterfaceIndex() const;
+  const std::string &Name() const;
+  const std::vector<InterfaceMethodMeta> &Methods() const;
 
 private:
   int32_t interfaceIndex;
   std::string name;
-  std::vector<std::string> methodNames;
+  std::vector<InterfaceMethodMeta> methods;
 };
 
 class ByteCodeProgram : public ICompilable {

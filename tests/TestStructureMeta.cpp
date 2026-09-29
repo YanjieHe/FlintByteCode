@@ -107,7 +107,7 @@ TEST_CASE("ByteCodeProgram header has correct counts", "[ByteCodeProgram]") {
   NativeFunction nf("sqrt", 0, 0);
 
   InterfaceMethodRef imr(0, 1, 2);
-  InterfaceMeta im(0, "Drawable", {"draw"});
+  InterfaceMeta im(0, "Drawable", {{"draw", 0}});
 
   ByteCodeProgram program({gv}, {sm}, {fn}, {nl}, {nf}, {imr}, {im}, 0);
   ByteCode bc;
