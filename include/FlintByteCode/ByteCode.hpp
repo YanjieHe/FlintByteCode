@@ -189,16 +189,16 @@ private:
 class InterfaceMethodRef : public ICompilable {
 public:
   InterfaceMethodRef() = default;
-  InterfaceMethodRef(int32_t interfaceIndex, uint16_t methodIndex,
-                     uint16_t argsSize)
-      : interfaceIndex{interfaceIndex}, methodIndex{methodIndex},
-        argsSize{argsSize} {}
+  InterfaceMethodRef(int32_t interfaceIndex, uint16_t methodIndex)
+      : interfaceIndex{interfaceIndex}, methodIndex{methodIndex} {}
   void Compile(ByteCode &byteCode) override;
+
+  int32_t InterfaceIndex() const;
+  uint16_t MethodIndex() const;
 
 private:
   int32_t interfaceIndex;
   uint16_t methodIndex;
-  uint16_t argsSize;
 };
 
 class InterfaceMethodMeta {

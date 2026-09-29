@@ -106,7 +106,7 @@ TEST_CASE("ByteCodeProgram header has correct counts", "[ByteCodeProgram]") {
   NativeLibrary nl("libmath.so");
   NativeFunction nf("sqrt", 0, 0);
 
-  InterfaceMethodRef imr(0, 1, 2);
+  InterfaceMethodRef imr(0, 1);
   InterfaceMeta im(0, "Drawable", {{"draw", 0}});
 
   ByteCodeProgram program({gv}, {sm}, {fn}, {nl}, {nf}, {imr}, {im}, 0);

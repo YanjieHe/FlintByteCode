@@ -192,8 +192,10 @@ void NativeFunction::Compile(ByteCode &byteCode) {
 void InterfaceMethodRef::Compile(ByteCode &byteCode) {
   byteCode.AddI32(this->interfaceIndex);
   byteCode.AddU16(this->methodIndex);
-  byteCode.AddU16(this->argsSize);
 }
+
+int32_t InterfaceMethodRef::InterfaceIndex() const { return interfaceIndex; }
+uint16_t InterfaceMethodRef::MethodIndex() const { return methodIndex; }
 
 const std::string &InterfaceMethodMeta::Name() const { return name; }
 

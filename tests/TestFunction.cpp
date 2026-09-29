@@ -173,9 +173,9 @@ TEST_CASE("VTableEntry with empty methods", "[VTableEntry]") {
 // ============================================================
 
 TEST_CASE(
-    "InterfaceMethodRef compiles interfaceIndex, methodIndex, and argsSize",
+    "InterfaceMethodRef compiles interfaceIndex and methodIndex",
     "[InterfaceMethodRef]") {
-  InterfaceMethodRef ref(3, 7, 2);
+  InterfaceMethodRef ref(3, 7);
   ByteCode bc;
   ref.Compile(bc);
 
@@ -188,20 +188,16 @@ TEST_CASE(
   REQUIRE(read_u16(b, pos) == 7); // methodIndex
   pos += 2;
 
-  REQUIRE(read_u16(b, pos) == 2); // argsSize
-  pos += 2;
-
-  REQUIRE(bc.Size() == 8); // i32 + u16 + u16
+  REQUIRE(bc.Size() == 6); // i32 + u16
 }
 
 TEST_CASE("InterfaceMethodRef with zero values", "[InterfaceMethodRef]") {
-  InterfaceMethodRef ref(0, 0, 0);
+  InterfaceMethodRef ref(0, 0);
   ByteCode bc;
   ref.Compile(bc);
 
   auto &b = bc.GetBytes();
   REQUIRE(read_i32(b, 0) == 0);
   REQUIRE(read_u16(b, 4) == 0);
-  REQUIRE(read_u16(b, 6) == 0);
-  REQUIRE(bc.Size() == 8);
+  REQUIRE(bc.Size() == 6);
 }
