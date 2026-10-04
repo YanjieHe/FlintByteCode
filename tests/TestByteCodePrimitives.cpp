@@ -21,6 +21,19 @@ TEST_CASE("AddOp appends single byte with opcode value", "[ByteCode]") {
   REQUIRE(bc.GetBytes()[1] == 2);
 }
 
+TEST_CASE("String opcodes preserve their grouped bytecode values", "[ByteCode]") {
+  REQUIRE(static_cast<Byte>(OpCode::PUSH_STRING_CHAR) == 42);
+
+  REQUIRE(static_cast<Byte>(OpCode::EQ_STRING) == 109);
+  REQUIRE(static_cast<Byte>(OpCode::NE_STRING) == 114);
+  REQUIRE(static_cast<Byte>(OpCode::GT_STRING) == 119);
+  REQUIRE(static_cast<Byte>(OpCode::LT_STRING) == 124);
+  REQUIRE(static_cast<Byte>(OpCode::GE_STRING) == 129);
+  REQUIRE(static_cast<Byte>(OpCode::LE_STRING) == 134);
+
+  REQUIRE(static_cast<Byte>(OpCode::STRING_LENGTH) == 159);
+}
+
 // ============================================================
 // AddByte
 // ============================================================
